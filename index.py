@@ -13,9 +13,13 @@
 
 import pandas as pd
 import requests
+import time
+import random
 from bs4 import BeautifulSoup
 from urllib.parse import quote
 from htmlmin import minify
+
+headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'}
 
 file_path = './template.html'
 
@@ -35,7 +39,7 @@ def get_description_from_sku(sku):
     base_url = 'https://todorefacciones.mx'
     url = f'{base_url}/search?q={sku}'
     # print(url)
-    response = requests.get(url)
+    response = requests.get(url, headers=headers)
     soup = BeautifulSoup(response.content, 'html.parser')
 
     # Check if search has results
@@ -61,6 +65,9 @@ def get_description_from_sku(sku):
 
 
 def build_description(sku):
+    delay = random.randint(1, 5)  # Random delay between 1 to 5 seconds
+    # print("Delaying for", delay, "seconds before the next request...")
+    time.sleep(delay)
     description = get_description_from_sku(sku)
     if description:
         new_description = BeautifulSoup(description, 'html.parser')
@@ -79,6 +86,8 @@ def build_description(sku):
         description_div = original_description.find('div', id='bjx-item-description')
         description_div.insert_after(new_description.div)
         return {'brand': brand, 'description': str(original_description)}
+    else:
+        return {'brand': None, 'description': minified_html}
 
 # print(build_description('A-KS116I'))
 
@@ -98,7 +107,7 @@ def main():
     products["Valor de propiedad 3"] = "Grupo TR"
     products["Precio"] = (data["PRECIO + IVA"] * 1.16) * 1.56
     products["Peso (kg)"] = 4
-    # products["Description_and_brand"] =  data["SKU"].apply(build_description)
+    products["Description_and_brand"] =  data["SKU"].apply(build_description)
 
     products[['Alto (cm)', 'Ancho (cm)', 'Profundidad (cm)']] = 30
     products["Stock"] = 10
