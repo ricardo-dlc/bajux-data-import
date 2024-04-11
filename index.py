@@ -28,17 +28,13 @@ with open(file_path, 'r') as file:
 
 minified_html = minify(html_text)
 
-# print(minified_html)
-
 def url_encode(text):
     return quote(text)
 
 def get_description_from_sku(sku):
-    # print(f'SKU is {sku}')
     # URL of the webpage
     base_url = 'https://todorefacciones.mx'
     url = f'{base_url}/search?q={sku}'
-    # print(url)
     response = requests.get(url, headers=headers)
     soup = BeautifulSoup(response.content, 'html.parser')
 
@@ -50,7 +46,6 @@ def get_description_from_sku(sku):
         product_url = first_product.find('a')['href']
 
         if product_url:
-            # print('Product URL', product_url)
             product_url = base_url + product_url
 
             # Make a request to the product page
@@ -66,7 +61,6 @@ def get_description_from_sku(sku):
 
 def build_description(sku):
     delay = random.randint(1, 5)  # Random delay between 1 to 5 seconds
-    # print("Delaying for", delay, "seconds before the next request...")
     time.sleep(delay)
     description = get_description_from_sku(sku)
     if description:
@@ -78,7 +72,6 @@ def build_description(sku):
             print('No brand has been found.')
             print(brand)
             brand = None
-        # print(f"Marca: {brand}")
 
         original_description = BeautifulSoup(minified_html, 'html.parser')
 
@@ -89,12 +82,11 @@ def build_description(sku):
     else:
         return {'brand': None, 'description': minified_html}
 
-# print(build_description('A-KS116I'))
 
 def main():
     data = pd.read_excel('catalog.xlsx', skiprows=5)
     products = pd.read_csv('products.csv', sep=';')
-    # print(products.columns)
+
     products["Nombre"] = data["DESCRIPCION"].values
     products["Identificador de URL"] = products["Nombre"].str.replace(' ', '-')
     products["Identificador de URL"] = products["Identificador de URL"].apply(url_encode)
@@ -108,7 +100,6 @@ def main():
     products["Precio"] = (data["PRECIO + IVA"] * 1.16) * 1.56
     products["Peso (kg)"] = 4
     products["Description_and_brand"] =  data["SKU"].apply(build_description)
-
     products[['Alto (cm)', 'Ancho (cm)', 'Profundidad (cm)']] = 30
     products["Stock"] = 10
     products["MPN (Número de pieza del fabricante)"] = data["SKU"]
