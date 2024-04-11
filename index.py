@@ -98,14 +98,12 @@ def main():
     products["Valor de propiedad 3"] = "Grupo TR"
     products["Precio"] = (data["PRECIO + IVA"] * 1.16) * 1.56
     products["Peso (kg)"] = 4
-    products["Description_and_brand"] =  data["SKU"].apply(build_description)
-
-    print(len(data))
-    print(len(products))
+    # products["Description_and_brand"] =  data["SKU"].apply(build_description)
 
     products[['Alto (cm)', 'Ancho (cm)', 'Profundidad (cm)']] = 30
     products["Stock"] = 10
-    products[["SKU", "MPN (Número de pieza del fabricante)"]] = data["SKU"].values.reshape(-1, 1)
+    products["MPN (Número de pieza del fabricante)"] = data["SKU"]
+    products["SKU"] = data["SKU"]
     products["Mostrar en tienda"] = "SÍ"
     products["Producto Físico"] = "SÍ"
     products["Envío sin cargo"] = "NO"
