@@ -19,7 +19,8 @@ from bs4 import BeautifulSoup
 from urllib.parse import quote
 from htmlmin import minify
 
-headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'}
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'}
 
 file_path = './template.html'
 
@@ -28,8 +29,10 @@ with open(file_path, 'r') as file:
 
 minified_html = minify(html_text)
 
+
 def url_encode(text):
     return quote(text)
+
 
 def get_description_from_sku(sku):
     # URL of the webpage
@@ -39,7 +42,8 @@ def get_description_from_sku(sku):
     soup = BeautifulSoup(response.content, 'html.parser')
 
     # Check if search has results
-    product_articles = soup.select('main#collection > div.row > article.product')
+    product_articles = soup.select(
+        'main#collection > div.row > article.product')
     if product_articles:
         # If results found, extract the URL of the first product
         first_product = product_articles[0]
@@ -50,7 +54,8 @@ def get_description_from_sku(sku):
 
             # Make a request to the product page
             product_response = requests.get(product_url)
-            product_soup = BeautifulSoup(product_response.content, 'html.parser')
+            product_soup = BeautifulSoup(
+                product_response.content, 'html.parser')
 
             description = product_soup.select_one('#single-description > div')
             del description['class']
@@ -65,7 +70,8 @@ def build_description(sku):
     description = get_description_from_sku(sku)
     if description:
         new_description = BeautifulSoup(description, 'html.parser')
-        brand = new_description.find('p', string=lambda text: text and "MARCA:" in text.upper())
+        brand = new_description.find(
+            'p', string=lambda text: text and "MARCA:" in text.upper())
         if brand:
             brand = brand.string.replace("MARCA:", "", 1).strip()
         else:
@@ -76,7 +82,8 @@ def build_description(sku):
         original_description = BeautifulSoup(minified_html, 'html.parser')
 
         # Find the div with id "description"
-        description_div = original_description.find('div', id='bjx-item-description')
+        description_div = original_description.find(
+            'div', id='bjx-item-description')
         description_div.insert_after(new_description.div)
         return {'brand': brand, 'description': str(original_description)}
     else:
@@ -89,8 +96,10 @@ def main():
 
     products["Nombre"] = data["DESCRIPCION"].values
     products["Identificador de URL"] = products["Nombre"].str.replace(' ', '-')
-    products["Identificador de URL"] = products["Identificador de URL"].apply(url_encode)
-    products["Categorías"] = "Tiendas oficiales > Grupo Refaccionario TR > " + data["GRUPO"] + " > " + data["ARMADORA"]
+    products["Identificador de URL"] = products["Identificador de URL"].apply(
+        url_encode)
+    products["Categorías"] = "Tiendas oficiales > Grupo Refaccionario TR > " + \
+        data["GRUPO"] + " > " + data["ARMADORA"]
     products["Nombre de propiedad 1"] = "Armadora"
     products["Valor de propiedad 1"] = data["ARMADORA"]
     products["Nombre de propiedad 2"] = "Grupo"
@@ -99,7 +108,7 @@ def main():
     products["Valor de propiedad 3"] = "Grupo TR"
     products["Precio"] = (data["PRECIO + IVA"] * 1.16) * 1.56
     products["Peso (kg)"] = 4
-    products["Description_and_brand"] =  data["SKU"].apply(build_description)
+    products["Description_and_brand"] = data["SKU"].apply(build_description)
     products[['Alto (cm)', 'Ancho (cm)', 'Profundidad (cm)']] = 30
     products["Stock"] = 10
     products["MPN (Número de pieza del fabricante)"] = data["SKU"]
@@ -111,7 +120,6 @@ def main():
     products.to_csv(sep=';', index=False, path_or_buf='new_data.csv')
 
     print(products)
-
 
 
 if __name__ == "__main__":
