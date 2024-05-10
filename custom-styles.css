@@ -1,3 +1,5 @@
+@import url('https://cdn-uicons.flaticon.com/2.3.0/uicons-solid-straight/css/uicons-solid-straight.css');
+
 @font-face {
     font-family: "Honk";
     font-style: normal;
@@ -25,7 +27,7 @@
 .bajux-offer-timer {
     height: 100px;
     width: auto;
-    background-image: url("https://i.ibb.co/YyHJ2XR/Video-Cuenta-Atr-s-Reloj-Minimalista-Pastel-Car-tula-de-disco-1.gif");
+    background-image: url("https://res.cloudinary.com/drjsknnc8/image/upload/q_auto/v1715370227/timer_qpauok.gif");
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
@@ -37,8 +39,4 @@
 
 #bajux-item-description p {
     color: #767676;
-}
-
-.bajux-color-green {
-    color: #00b050 !important;
 }
