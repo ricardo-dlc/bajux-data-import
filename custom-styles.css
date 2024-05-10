@@ -17,14 +17,14 @@
     height: 300px;
     width: auto;
     background-image: url("https://res.cloudinary.com/drjsknnc8/image/upload/q_auto/banner-envios-cohete.png");
-    background-position: center;
+    background-position: left;
     background-repeat: no-repeat;
     background-size: contain;
 }
 
-.bajux-offer-image {
+.bajux-offer-timer {
     height: 100px;
-    width: 100px;
+    width: auto;
     background-image: url("https://i.ibb.co/YyHJ2XR/Video-Cuenta-Atr-s-Reloj-Minimalista-Pastel-Car-tula-de-disco-1.gif");
     background-position: center;
     background-repeat: no-repeat;
@@ -35,7 +35,7 @@
     color: #333;
 }
 
-.bajux-color-gray {
+#bajux-item-description p {
     color: #767676;
 }
 
