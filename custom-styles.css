@@ -33,10 +33,11 @@
     background-size: contain;
 }
 
-#bajux-item-description strong {
-    color: #333;
+#bajux-item-description {
+    color: #767676;
 }
 
-#bajux-item-description p {
-    color: #767676;
+#bajux-item-description h6,
+#bajux-item-description a strong {
+    color: #333;
 }
