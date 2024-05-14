@@ -17,7 +17,8 @@ import time
 import random
 from bs4 import BeautifulSoup
 from urllib.parse import quote
-from product import generate_description
+from htmlmin import minify
+from product import generate_description, add_details
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'}
@@ -27,6 +28,14 @@ columns = ['SKU']
 
 # Create an empty DataFrame with columns defined
 no_detail_products = pd.DataFrame(columns=columns)
+
+
+def convert_to_title_case(soup):
+    for element in soup.find_all(text=True):
+        # Ignore script and style tags
+        if element.parent.name not in ['script', 'style']:
+            element.replace_with(element.string.title())
+    return soup
 
 
 def get_details_from_sku(sku):
@@ -57,7 +66,8 @@ def get_details_from_sku(sku):
             for tag in product_details.find_all(attrs={"data-mce-fragment": True}):
                 del tag['data-mce-fragment']
             del product_details['class']
-            return str(product_details)
+            product_details = convert_to_title_case(product_details)
+            return minify(str(product_details), remove_optional_attribute_quotes=False)
     else:
         print("No results found for SKU:", sku)
         no_detail_products._append({"SKU": sku}, ignore_index=True)
@@ -76,7 +86,9 @@ def main():
     products = pd.read_csv('products.csv', sep=';')
 
     products["Nombre"] = data["DESCRIPCION"].values
+    products["Nombre"] = products["Nombre"].str.title()
     products["Identificador de URL"] = products["Nombre"].str.replace(' ', '-')
+    products["Identificador de URL"] = products["Identificador de URL"].str.lower()
     products["Identificador de URL"] = products["Identificador de URL"].apply(
         quote)
     products["Categorías"] = "Tiendas oficiales > Grupo Refaccionario TR > " + \
@@ -91,8 +103,6 @@ def main():
     products["Precio"] = (data["PRECIO + IVA"] * 1.16) * 1.56
     products["Peso (kg)"] = 4
     products["productDetails"] = data["SKU"].apply(build_details)
-    products["Descripción"] = products.apply(
-        lambda row: generate_description(row, additional_text=products["productDetails"]), axis=1)
     products[['Alto (cm)', 'Ancho (cm)', 'Profundidad (cm)']] = 30
     products["Stock"] = 10
     products["MPN (Número de pieza del fabricante)"] = data["SKU"]
@@ -101,8 +111,14 @@ def main():
     products["Producto Físico"] = "SÍ"
     products["Envío sin cargo"] = "NO"
 
-    products.to_csv(sep=';', index=False, path_or_buf='data_to_import.csv')
-    no_detail_products.to_csv(sep=';', index=False,
+    products["Descripción"] = products.apply(
+        lambda row: generate_description(row), axis=1)
+    products["Descripción"] = products.apply(
+        lambda row: add_details(row["Descripción"], row["productDetails"]), axis=1)
+
+    products.to_csv(sep=';', index=False,
+                    path_or_buf='data_to_import.csv', encoding="UTF-8")
+    no_detail_products.to_csv(sep=';', index=False, encoding="UTF-8",
                               path_or_buf='no_detail_products_log.csv')
 
     print(products)

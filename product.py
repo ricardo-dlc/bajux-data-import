@@ -33,25 +33,41 @@ def generate_description(row, additional_text=""):
     placeholder_div.clear()
     placeholder_div.append(p_tag)
 
-    if additional_text:
-        new_details_soup = BeautifulSoup(additional_text, 'html.parser')
-        for tag in new_details_soup.find_all(attrs={"data-mce-fragment": True}):
-            del tag['data-mce-fragment']
-        details_div = description_template_soup.find(
+    # if additional_text:
+    #     new_details_soup = BeautifulSoup(additional_text, 'html.parser')
+    #     details_div = description_template_soup.find(
+    #         'div', id='bajux-item-details')
+    #     details_div.clear()
+    #     details_div.append(new_details_soup)
+    # print(minify(str(description_template_soup)))
+    return minify(str(description_template_soup), remove_optional_attribute_quotes=False)
+
+
+def add_details(description, product_details=""):
+    if product_details:
+        print("Product has addtional details" + product_details)
+        description_soup = BeautifulSoup(description, 'html.parser')
+        new_details_soup = BeautifulSoup(product_details, 'html.parser')
+        details_div = description_soup.find(
             'div', id='bajux-item-details')
         details_div.clear()
         details_div.append(new_details_soup)
-    print(minify(str(description_template_soup)))
-    return minify(str(description_template_soup))
+
+        return minify(str(description_soup), remove_optional_attribute_quotes=False)
+
+    print("Product hasn't addtional details")
+    return description
 
 
 def main():
-    addtional = "<p>Nueva descripción</p><br data-mce-fragment=true>Otro texto más."
     product = pd.read_csv("test-product.csv", encoding="UTF-8", sep=';')
     product["SKU"] = "ABC123XYZ"
+    # product["additionalDetails"] = "<p>Nueva descripción</p><br data-mce-fragment=true>Otro texto más."
+    product["productDetails"] = ""
     product["Descripción"] = product.apply(
-        lambda row: generate_description(row, additional_text=addtional), axis=1)
-
+        lambda row: generate_description(row), axis=1)
+    product["Descripción"] = product.apply(
+        lambda row: add_details(row["Descripción"], row["productDetails"]), axis=1)
     product.to_csv("test-product-output.csv",
                    encoding="UTF-8", index=False)
 
