@@ -31,7 +31,7 @@ no_detail_products = pd.DataFrame(columns=columns)
 
 
 def convert_to_title_case(soup):
-    for element in soup.find_all(text=True):
+    for element in soup.find_all(string=True):
         # Ignore script and style tags
         if element.parent.name not in ['script', 'style']:
             element.replace_with(element.string.title())

@@ -15,22 +15,42 @@
     font-style: normal;
 }
 
-.bajux-fast-delivery-banner {
-    height: 300px;
+.banner {
     width: auto;
-    background-image: url("https://res.cloudinary.com/drjsknnc8/image/upload/q_auto/banner-envios-cohete.png");
     background-position: left;
     background-repeat: no-repeat;
     background-size: contain;
 }
 
+[class*="bajux-tuning-banner-"] {
+    height: 500px;
+}
+
+.bajux-tuning-banner-1 {
+    background-image: url("https://res.cloudinary.com/drjsknnc8/image/upload/q_auto/bajux/tuning-1_usb5d8.png");
+}
+
+.bajux-tuning-banner-2 {
+    background-image: url("https://res.cloudinary.com/drjsknnc8/image/upload/q_auto/bajux/tuning-2_p2rrrb.png");
+}
+
+.bajux-tuning-banner-3 {
+    background-image: url("https://res.cloudinary.com/drjsknnc8/image/upload/q_auto/bajux/tuning-3_sppzql.png");
+}
+
+.bajux-tuning-banner-4 {
+    background-image: url("https://res.cloudinary.com/drjsknnc8/image/upload/q_auto/bajux/tuning-4_bvu3n4.png");
+}
+
+.bajux-fast-delivery-banner {
+    height: 300px;
+    background-image: url("https://res.cloudinary.com/drjsknnc8/image/upload/q_auto/bajux/banner-envios-cohete_qmxopm.png");
+}
+
 .bajux-offer-timer {
     height: 100px;
-    width: auto;
-    background-image: url("https://res.cloudinary.com/drjsknnc8/image/upload/q_auto/v1715370227/timer_qpauok.gif");
+    background-image: url("https://res.cloudinary.com/drjsknnc8/image/upload/q_auto/bajux/timer_qpauok.gif");
     background-position: center;
-    background-repeat: no-repeat;
-    background-size: contain;
 }
 
 #bajux-item-description {

@@ -33,13 +33,6 @@ def generate_description(row, additional_text=""):
     placeholder_div.clear()
     placeholder_div.append(p_tag)
 
-    # if additional_text:
-    #     new_details_soup = BeautifulSoup(additional_text, 'html.parser')
-    #     details_div = description_template_soup.find(
-    #         'div', id='bajux-item-details')
-    #     details_div.clear()
-    #     details_div.append(new_details_soup)
-    # print(minify(str(description_template_soup)))
     return minify(str(description_template_soup), remove_optional_attribute_quotes=False)
 
 
@@ -59,15 +52,33 @@ def add_details(description, product_details=""):
     return description
 
 
+def add_extra_data(description, extra_html_string):
+    description_soup = BeautifulSoup(description, 'html.parser')
+    extra_html_soup = BeautifulSoup(extra_html_string, 'html.parser')
+    details_div = description_soup.find(
+        'div', id='bajux-item-description')
+    details_div.append(extra_html_soup)
+
+    return minify(str(description_soup), remove_optional_attribute_quotes=False)
+
+
 def main():
     product = pd.read_csv("test-product.csv", encoding="UTF-8", sep=';')
     product["SKU"] = "ABC123XYZ"
-    # product["additionalDetails"] = "<p>Nueva descripción</p><br data-mce-fragment=true>Otro texto más."
     product["productDetails"] = ""
+    extra_html = """<div class="extra-details mt-4">
+        <div class="banner bajux-tuning-banner-1 mb-4"></div>
+        <div class="banner bajux-tuning-banner-2 mb-4"></div>
+        <div class="banner bajux-tuning-banner-3 mb-4"></div>
+        <div class="banner bajux-tuning-banner-4"></div>
+    </div>
+"""
     product["Descripción"] = product.apply(
         lambda row: generate_description(row), axis=1)
     product["Descripción"] = product.apply(
         lambda row: add_details(row["Descripción"], row["productDetails"]), axis=1)
+    product["Descripción"] = product.apply(
+        lambda row: add_extra_data(row["Descripción"], extra_html), axis=1)
     product.to_csv("test-product-output.csv",
                    encoding="UTF-8", index=False)
 
