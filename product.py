@@ -1,7 +1,18 @@
 import pandas as pd
 from bs4 import BeautifulSoup
-from urllib.parse import quote
 from htmlmin import minify
+
+
+def parse_scientific_notation(x):
+    if pd.isna(x) or x == '':
+        return ''
+    try:
+        # Try to convert the value to a float
+        num = float(x)
+        # If successful, format it without scientific notation
+        return '{:.0f}'.format(num)
+    except ValueError:
+        return x
 
 
 def generate_description(row):
@@ -48,7 +59,6 @@ def add_details(description, product_details=""):
 
         return minify(str(description_soup), remove_optional_attribute_quotes=False)
 
-    print("Product hasn't addtional details")
     return description
 
 
@@ -73,6 +83,9 @@ def main():
         <div class="banner bajux-tuning-banner-4"></div>
     </div>
 """
+    product["Código de barras"] = '7.08e+11'
+    product["Código de barras"] = product["Código de barras"].apply(
+        parse_scientific_notation)
     product["Descripción"] = product.apply(
         lambda row: generate_description(row), axis=1)
     product["Descripción"] = product.apply(
