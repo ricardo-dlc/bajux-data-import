@@ -1,4 +1,5 @@
 import pandas as pd
+import re
 from bs4 import BeautifulSoup
 from htmlmin import minify
 
@@ -6,12 +7,20 @@ from htmlmin import minify
 def parse_scientific_notation(x):
     if pd.isna(x) or x == '':
         return ''
-    try:
-        # Try to convert the value to a float
-        num = float(x)
-        # If successful, format it without scientific notation
-        return '{:.0f}'.format(num)
-    except ValueError:
+    # Regular expression to match valid scientific notation with a '+' sign
+    scientific_notation_regex = re.compile(r'^-?\d+(\.\d+)?[eE]\+\d+$')
+    if isinstance(x, str) and scientific_notation_regex.match(x):
+        try:
+            # Try to convert the value to a float
+            num = float(x)
+            # If successful, format it without scientific notation
+            return '{:.0f}'.format(num)
+        except ValueError:
+            # If it raises a ValueError, it's already a string
+            return x
+    elif isinstance(x, (float, int)):
+        return '{:.0f}'.format(x)
+    else:
         return x
 
 
@@ -83,9 +92,12 @@ def main():
         <div class="banner bajux-tuning-banner-4"></div>
     </div>
 """
-    product["Código de barras"] = '7.08e+11'
+    product["Código de barras"] = '2E0127401'
     product["Código de barras"] = product["Código de barras"].apply(
         parse_scientific_notation)
+    # Step 4: Ensure the 'values_str' column is of type string
+    product['Código de barras'] = product['Código de barras'].astype(str)
+    print(product["Código de barras"])
     product["Descripción"] = product.apply(
         lambda row: generate_description(row), axis=1)
     product["Descripción"] = product.apply(
