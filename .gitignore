@@ -4,3 +4,4 @@ lib*
 *.csv
 *.xls*
 __pycache__
+template_test.html

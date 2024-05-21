@@ -107,6 +107,19 @@ def main():
     product.to_csv("test-product-output.csv",
                    encoding="UTF-8", index=False)
 
+    with open('./template_test.html', mode="+w") as template_test:
+        template_path = './template.html'
+        description_text = product.loc[0]['Descripción']
+        with open(template_path, 'r') as file:
+            html_text = file.read()
+
+        template_soup = BeautifulSoup(html_text, 'html.parser')
+        new_description_soup = BeautifulSoup(description_text, 'html.parser')
+        description_template_soup = template_soup.select_one(
+            '#bajux-item-description')
+        description_template_soup.replace_with(new_description_soup)
+        template_test.write(minify(str(template_soup)))
+
 
 if __name__ == "__main__":
     main()
