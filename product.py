@@ -4,7 +4,7 @@ from urllib.parse import quote
 from htmlmin import minify
 
 
-def generate_description(row, additional_text=""):
+def generate_description(row):
     template_path = './template.html'
     with open(template_path, 'r') as file:
         html_text = file.read()
@@ -13,7 +13,7 @@ def generate_description(row, additional_text=""):
     description_template_soup = template_soup.select_one(
         '#bajux-item-description')
 
-    text_description_template = "%s.%s Número de parte: %s. Código de barras: %s."
+    text_description_template = "%s.%s Número de parte: %s.%s"
 
     # Check if either "Nombre de propiedad 1" or "Nombre de propiedad 2" or "Nombre de propiedad 3" are not NaN and are equal to "marca"
     if not pd.isna(row["Nombre de propiedad 1"]) and str(row["Nombre de propiedad 1"]).strip().lower() == "marca":
@@ -27,7 +27,7 @@ def generate_description(row, additional_text=""):
 
     p_tag = template_soup.new_tag('p')
     p_tag.string = text_description_template % (
-        row["Nombre"], " Marca: " + row[brand] + "." if brand else "", row["SKU"], row["SKU"])
+        row["Nombre"], " Marca: " + row[brand] + "." if brand else "", row["SKU"], " Código de barras: " + row["Código de barras"] + "." if row["Código de barras"] else "")
     placeholder_div = description_template_soup.find(
         'div', id='bajux-item-placehoder')
     placeholder_div.clear()
