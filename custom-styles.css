@@ -1,3 +1,11 @@
+/* Color palette
+#333333
+#575757
+#7E7E7E
+#A7A7A7
+#D2D2D2
+*/
+
 @import url('https://cdn-uicons.flaticon.com/2.3.0/uicons-solid-straight/css/uicons-solid-straight.css');
 
 @font-face {
@@ -53,16 +61,29 @@
 }
 
 #bajux-item-description {
-    color: #767676;
+    color: #7E7E7E;
 }
 
 #bajux-item-description h6,
-#bajux-item-description a strong {
-    color: #333;
+#bajux-item-description a {
+    color: #333333;
+}
+
+#bajux-item-description a {
+    display: inline-block;
+    font-weight: bold;
+    text-decoration: underline;
+    text-decoration-color: #575757;
+}
+
+#bajux-item-description a:hover {
+    color: #7E7E7E;
+    text-decoration: none;
 }
 
 /* Media query for devices with a minimum width of 425px and a maximum width of 767px */
 @media only screen and (min-width: 425px) and (max-width: 767px) {
+
     [class*="bajux-tuning-banner"],
     .bajux-fast-delivery-banner {
         height: 300px; /* Height for medium screens */
@@ -71,6 +92,7 @@
 
 /* Media query for devices with a width lower than 425px */
 @media only screen and (max-width: 424px) {
+
     [class*="bajux-tuning-banner"],
     .bajux-fast-delivery-banner {
         height: 200px; /* Height for small screens */
