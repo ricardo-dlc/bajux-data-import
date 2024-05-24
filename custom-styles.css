@@ -30,6 +30,7 @@
 }
 
 [class*="bajux-tuning-banner"],
+[class*="bajux-differential-banner"],
 .bajux-fast-delivery-banner {
     height: 500px;
 }
@@ -48,6 +49,26 @@
 
 .bajux-tuning-banner-4 {
     background-image: url("https://res.cloudinary.com/drjsknnc8/image/upload/q_auto/bajux/tuning-4_bvu3n4.png");
+}
+
+.bajux-differential-banner-1 {
+    background-image: url("https://res.cloudinary.com/drjsknnc8/image/upload/q_auto/bajux/differential-1_gjyrme.png");
+}
+
+.bajux-differential-banner-2 {
+    background-image: url("https://res.cloudinary.com/drjsknnc8/image/upload/q_auto/bajux/differential-2_viyx2p.png");
+}
+
+.bajux-differential-banner-3 {
+    background-image: url("https://res.cloudinary.com/drjsknnc8/image/upload/q_auto/bajux/differential-3_eksnzv.png");
+}
+
+.bajux-differential-banner-4 {
+    background-image: url("https://res.cloudinary.com/drjsknnc8/image/upload/q_auto/bajux/differential-4_a0tiwf.png");
+}
+
+.bajux-differential-banner-5 {
+    background-image: url("https://res.cloudinary.com/drjsknnc8/image/upload/q_auto/bajux/differential-5_buyopf.png");
 }
 
 .bajux-fast-delivery-banner {
@@ -85,6 +106,7 @@
 @media only screen and (min-width: 425px) and (max-width: 767px) {
 
     [class*="bajux-tuning-banner"],
+    [class*="bajux-differential-banner"],
     .bajux-fast-delivery-banner {
         height: 300px; /* Height for medium screens */
     }
@@ -94,6 +116,7 @@
 @media only screen and (max-width: 424px) {
 
     [class*="bajux-tuning-banner"],
+    [class*="bajux-differential-banner"],
     .bajux-fast-delivery-banner {
         height: 200px; /* Height for small screens */
     }
