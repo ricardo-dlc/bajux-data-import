@@ -2,6 +2,23 @@ import pandas as pd
 import re
 from bs4 import BeautifulSoup
 from htmlmin import minify
+from urllib.parse import quote, unquote
+
+
+def custom_encode(input_string):
+    # URL-encode the input string
+    encoded_string = quote(input_string, safe='')
+    # Replace % with --
+    custom_encoded_string = encoded_string.replace('%', '--')
+    return custom_encoded_string
+
+
+def custom_decode(custom_encoded_string):
+    # Replace -- back with %
+    encoded_string = custom_encoded_string.replace('--', '%')
+    # URL-decode the string
+    decoded_string = unquote(encoded_string)
+    return decoded_string
 
 
 def generate_provider_code(provider_name):
