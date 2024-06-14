@@ -47,11 +47,11 @@ def generate_new_sku(provider_code, original_sku, prefix=""):
 
 
 def update_price(price):
-    if (price >= 0 & price < 500):
+    if (price < 500):
         return price * 1.2
-    if (price >= 500 & price < 1000):
+    if (price < 1000):
         return price * 1.15
-    if (price >= 1000 & price < 1500):
+    if (price < 1500):
         return price * 1.1
     return price * 1.05
 
@@ -99,7 +99,7 @@ def generate_description(row):
 
     p_tag = template_soup.new_tag('p')
     p_tag.string = text_description_template % (
-        row["Nombre"], " Marca: " + row[brand] + "." if brand else "", row["SKU"], " Código de barras: " + row["Código de barras"] + "." if row["Código de barras"] else "")
+        row["Nombre"], " Marca: " + row[brand] + "." if brand else "", row["SKU"], " Código de barras: " + row["Código de barras"] + "." if pd.notna(row["Código de barras"]) else "")
     placeholder_div = description_template_soup.find(
         'div', id='bajux-item-placehoder')
     placeholder_div.clear()
