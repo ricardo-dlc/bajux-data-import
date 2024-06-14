@@ -4,6 +4,31 @@ from bs4 import BeautifulSoup
 from htmlmin import minify
 
 
+def generate_provider_code(provider_name):
+    # Split the provider name into words
+    words = provider_name.split()
+    num_words = len(words)
+
+    if num_words == 1:
+        # Case: 1 word, take the first 4 letters of the word
+        base_code = words[0][:4].upper()
+    elif num_words == 2:
+        # Case: 2 words, take 2 letters from each word
+        base_code = (words[0][:2] + words[1][:2]).upper()
+    elif num_words == 3:
+        # Case: 3 words, take 2 letters from the first word and 1 letter from each subsequent word
+        base_code = (words[0][:2] + words[1][0] + words[2][0]).upper()
+    else:
+        # Case: 4 or more words, take the first letter from the first 4 words
+        base_code = ''.join(word[0] for word in words[:4]).upper()
+
+    return base_code
+
+
+def generate_new_sku(provider_code, original_sku, prefix=""):
+    return f"{prefix}{provider_code}-{original_sku}"
+
+
 def update_price(price):
     if (price >= 0 & price < 500):
         return price * 1.2
