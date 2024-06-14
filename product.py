@@ -4,6 +4,16 @@ from bs4 import BeautifulSoup
 from htmlmin import minify
 
 
+def update_price(price):
+    if (price >= 0 & price < 500):
+        return price * 1.2
+    if (price >= 500 & price < 1000):
+        return price * 1.15
+    if (price >= 1000 & price < 1500):
+        return price * 1.1
+    return price * 1.05
+
+
 def parse_scientific_notation(x):
     if pd.isna(x) or x == '':
         return ''
