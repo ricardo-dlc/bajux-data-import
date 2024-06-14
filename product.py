@@ -48,12 +48,14 @@ def generate_new_sku(provider_code, original_sku, prefix=""):
 
 def update_price(price):
     if (price < 500):
-        return price * 1.2
-    if (price < 1000):
-        return price * 1.15
-    if (price < 1500):
-        return price * 1.1
-    return price * 1.05
+        percentage = 1.25
+    elif (price < 1000):
+        percentage = 1.1765
+    elif (price < 1500):
+        percentage = 1.1111
+    else:
+        percentage = 1.0526
+    return round(price * percentage, 2)
 
 
 def parse_scientific_notation(x):
