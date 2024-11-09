@@ -30,9 +30,26 @@
 }
 
 [class*="bajux-tuning-banner"],
+[class*="bajux-chente-banner"],
 [class*="bajux-differential-banner"],
 .bajux-fast-delivery-banner {
     height: 500px;
+}
+
+.bajux-chente-banner-1 {
+    background-image: url("https://res.cloudinary.com/drjsknnc8/image/upload/q_auto/bajux/chente_1_dpux3o.png");
+}
+
+.bajux-chente-banner-2 {
+    background-image: url("https://res.cloudinary.com/drjsknnc8/image/upload/q_auto/bajux/chente_4_ef2s6m.png");
+}
+
+.bajux-chente-banner-3 {
+    background-image: url("https://res.cloudinary.com/drjsknnc8/image/upload/q_auto/bajux/chente_3_e5xg3y.png");
+}
+
+.bajux-chente-banner-4 {
+    background-image: url("https://res.cloudinary.com/drjsknnc8/image/upload/q_auto/bajux/chente_2_jhpgio.png");
 }
 
 .bajux-tuning-banner-1 {
@@ -106,6 +123,7 @@
 @media only screen and (min-width: 425px) and (max-width: 767px) {
 
     [class*="bajux-tuning-banner"],
+    [class*="bajux-chente-banner"],
     [class*="bajux-differential-banner"],
     .bajux-fast-delivery-banner {
         height: 300px; /* Height for medium screens */
@@ -116,6 +134,7 @@
 @media only screen and (max-width: 424px) {
 
     [class*="bajux-tuning-banner"],
+    [class*="bajux-chente-banner"],
     [class*="bajux-differential-banner"],
     .bajux-fast-delivery-banner {
         height: 200px; /* Height for small screens */

@@ -5,3 +5,4 @@ lib*
 *.xls*
 __pycache__
 template_test.html
+*Zone*
